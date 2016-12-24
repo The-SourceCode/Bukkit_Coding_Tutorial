@@ -1,0 +1,10 @@
+package me.dabuseck.Tutorial;
+
+import org.bukkit.plugin.java.JavaPlugin;
+
+import me.dabuseck.Tutorial.Events.EventsClass;
+import net.md_5.bungee.api.ChatColor;
+
+public class Tutorial extends JavaPlugin {
+
+}
