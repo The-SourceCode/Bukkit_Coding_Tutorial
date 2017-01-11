@@ -1,0 +1,37 @@
+package me.dabuseck.Tutorial.Events;
+
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.plugin.Plugin;
+
+import me.dabuseck.Tutorial.Tutorial;
+import net.md_5.bungee.api.ChatColor;
+
+public class EventsClass implements Listener {
+	private Plugin plugin = Tutorial.getPlugin(Tutorial.class);
+	private int count;
+
+	@EventHandler
+	public void onPlace(BlockPlaceEvent event) {
+		Block block = event.getBlock();
+		Player player = event.getPlayer();
+
+		Location b_loc = block.getLocation();
+		player.sendMessage(ChatColor.RED + "Placing TNT has added you to out logs!");
+		if (block.getType().equals(Material.TNT)) {
+			plugin.getConfig().set("Users." + player.getUniqueId() + ".Block_" + count + ".World",
+					b_loc.getWorld().getName());
+			plugin.getConfig().set("Users." + player.getUniqueId() + ".Block_" + count + ".X", b_loc.getBlockX());
+			plugin.getConfig().set("Users." + player.getUniqueId() + ".Block_" + count + ".Y", b_loc.getBlockY());
+			plugin.getConfig().set("Users." + player.getUniqueId() + ".Block_" + count + ".Z", b_loc.getBlockZ());
+			plugin.saveConfig();
+			count++;
+		}
+
+	}
+}
