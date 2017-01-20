@@ -1,0 +1,30 @@
+package me.dabuseck.Tutorial;
+
+import org.bukkit.plugin.java.JavaPlugin;
+
+import me.dabuseck.Tutorial.Events.EventsClass;
+import me.dabuseck.Tutorial.Items.CustomItems;
+import net.md_5.bungee.api.ChatColor;
+
+public class Tutorial extends JavaPlugin {
+
+public void onEnable() {
+getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "\n\nTutorial has been Enabled\n\n");
+getServer().getPluginManager().registerEvents(new EventsClass(), this);
+loadConfig();
+
+CustomItems items = new CustomItems();
+items.customRecipe();
+items.unshaped();
+}
+
+public void onDisable() {
+getServer().getConsoleSender().sendMessage(ChatColor.RED + "\n\nTutorial has been Disabled\n\n");
+}
+
+public void loadConfig(){
+getConfig().options().copyDefaults(true);
+saveConfig();
+}
+
+}
