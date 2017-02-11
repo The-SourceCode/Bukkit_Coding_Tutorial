@@ -1,0 +1,79 @@
+package me.dabuseck.Tutorial;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+
+import net.minecraft.server.v1_11_R1.CommandExecute;
+
+public class Commands extends CommandExecute implements Listener, CommandExecutor {
+
+	public String cmd1 = "warp";
+	public String cmd2 = "setwarp";
+
+	private Tutorial plugin = Tutorial.getPlugin(Tutorial.class);
+
+	@Override
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		if (sender instanceof Player) {
+
+			Player player = (Player) sender;
+
+			if (cmd.getName().equalsIgnoreCase(cmd1)) {
+				if (args.length == 1 && !args[0].equalsIgnoreCase("location")) {
+					for (Player online : Bukkit.getOnlinePlayers()) {
+						if (args[0].equalsIgnoreCase(online.getDisplayName())) {
+							player.teleport(online);
+							player.sendMessage(
+									ChatColor.GREEN + "You have teleported to: ยงe" + online.getDisplayName());
+							return true;
+						} else {
+							player.sendMessage(ChatColor.RED + "That is not a valid player");
+							return true;
+						}
+					}
+				}
+
+				if (args[0].equalsIgnoreCase("location")) {
+					float yaw = plugin.getConfig().getInt("Warps." + args[1] + ".Yaw");
+					float pitch = plugin.getConfig().getInt("Warps." + args[1] + ".Pitch");
+					float x = plugin.getConfig().getInt("Warps." + args[1] + ".X");
+					float y = plugin.getConfig().getInt("Warps." + args[1] + ".Y");
+					float z = plugin.getConfig().getInt("Warps." + args[1] + ".Z");
+
+					Location loc = new Location(player.getWorld(), x, y, z, yaw, pitch);
+					player.teleport(loc);
+					return true;
+
+				}
+			}
+
+			if (cmd.getName().equalsIgnoreCase(cmd2)) {
+				if (args.length == 1) {
+					Location loc = player.getLocation();
+
+					plugin.getConfig().set("Warps." + args[0] + ".Yaw", loc.getYaw());
+					plugin.getConfig().set("Warps." + args[0] + ".Pitch", loc.getPitch());
+					plugin.getConfig().set("Warps." + args[0] + ".X", loc.getX());
+					plugin.getConfig().set("Warps." + args[0] + ".Y", loc.getY());
+					plugin.getConfig().set("Warps." + args[0] + ".Z", loc.getZ());
+					plugin.saveConfig();
+					player.sendMessage(ChatColor.GREEN + "Location saved to config");
+					return true;
+				} else {
+					return true;
+				}
+			}
+		} else {
+			sender.sendMessage(ChatColor.RED + "Only players can use this command!");
+			return true;
+		}
+		return false;
+	}
+
+}
