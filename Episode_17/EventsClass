@@ -1,0 +1,42 @@
+package me.dabuseck.Tutorial.Events;
+
+import java.util.UUID;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
+
+import me.dabuseck.Tutorial.Tutorial;
+
+public class EventsClass implements Listener {
+
+	private Tutorial plugin = Tutorial.getPlugin(Tutorial.class);
+
+	@EventHandler
+	public void blockPlace(BlockPlaceEvent event) {
+		Block block = event.getBlock();
+
+		Player player = event.getPlayer();
+		UUID uuid = player.getUniqueId();
+
+		if (block.getType().equals(Material.TNT)) {
+			event.setCancelled(true);
+			int playerkicks = plugin.getConfig().getInt(uuid + ".kicks");
+			int bankicks = plugin.getConfig().getInt("KicksTillBan");
+			
+			if (playerkicks < bankicks) {
+				player.kickPlayer(ChatColor.RED + "Placing TNT is not allowed on this server!");
+				plugin.getConfig().set(uuid + ".kicks", playerkicks + 1);
+				plugin.saveConfig();
+			}else{
+				plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "ban " + uuid + " §cYou have reached the Maximum amount of TNT places!");
+			}
+		} else {
+			return;
+		}
+	}
+}
