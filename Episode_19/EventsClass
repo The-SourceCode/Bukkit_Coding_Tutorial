@@ -1,0 +1,50 @@
+package me.dabuseck.Tutorial.Events;
+
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import me.dabuseck.Tutorial.Tutorial;
+
+public class EventsClass implements Listener {
+
+private Tutorial plugin = Tutorial.getPlugin(Tutorial.class);
+
+@EventHandler
+public void grenadeLaunch(PlayerInteractEvent event) {
+ItemStack item = event.getItem();
+Action action = event.getAction();
+Player player = event.getPlayer();
+Location loc = player.getLocation();
+loc.setY(loc.getY() + 1.5f);
+
+if (item == null) {
+return;
+}
+
+if (action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)) {
+if (item.getType().equals(Material.DIAMOND)) {
+item.setAmount(item.getAmount() - 1);
+ItemStack bomb = new ItemStack(item.getType(), 1);
+Entity drop = loc.getWorld().dropItemNaturally(loc, bomb);
+drop.setVelocity(loc.getDirection().multiply(2));
+new BukkitRunnable() {
+
+@Override
+public void run() {
+loc.getWorld().createExplosion(drop.getLocation(), 10, true);
+}
+
+}.runTaskLater(plugin, 40);
+}
+}
+}
+
+}
