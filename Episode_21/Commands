@@ -1,0 +1,45 @@
+package me.dabuseck.Tutorial;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_11_R1.CraftWorld;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+
+import net.minecraft.server.v1_11_R1.CommandExecute;
+import net.minecraft.server.v1_11_R1.EntitySkeleton;
+import net.minecraft.server.v1_11_R1.WorldServer;
+
+public class Commands extends CommandExecute implements Listener, CommandExecutor {
+
+	public String cmd1 = "mob";
+
+	@Override
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		if (sender instanceof Player) {
+
+			Player player = (Player) sender;
+			Location loc = player.getLocation();
+			WorldServer world = ((CraftWorld)player.getWorld()).getHandle();
+
+			if (cmd.getName().equalsIgnoreCase(cmd1)) {
+				EntitySkeleton skele = new EntitySkeleton(world);
+				skele.setCustomName(ChatColor.RED + "Skeleton");
+				skele.setCustomNameVisible(true);
+				
+				skele.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+				world.addEntity(skele);
+				return true;
+			}
+
+		} else {
+			sender.sendMessage(ChatColor.RED + "Only players can use this command!");
+			return true;
+		}
+		return false;
+	}
+
+}
