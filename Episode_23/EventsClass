@@ -1,0 +1,36 @@
+package me.dabuseck.Tutorial.Events;
+
+import org.bukkit.Material;
+import org.bukkit.SkullType;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
+
+import net.md_5.bungee.api.ChatColor;
+
+
+public class EventsClass implements Listener {
+	
+	@EventHandler
+	public void join(PlayerJoinEvent event){
+		
+		Player player = event.getPlayer();
+		
+		ItemStack playerskull = new ItemStack(Material.SKULL_ITEM,1, (short) SkullType.PLAYER.ordinal());
+		
+		SkullMeta meta = (SkullMeta) playerskull.getItemMeta();
+		
+		meta.setOwner(player.getName());
+		meta.setDisplayName(ChatColor.DARK_PURPLE + "Player Info");
+		
+		playerskull.setItemMeta(meta);
+		
+		player.getInventory().addItem(playerskull);
+		player.sendMessage(ChatColor.DARK_AQUA + "Please refer to your player heard for Player Info");
+		
+	}
+	
+}
