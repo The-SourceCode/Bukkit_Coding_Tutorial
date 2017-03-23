@@ -1,37 +1,36 @@
 package me.dabuseck.Tutorial.Events;
 
-import java.util.ArrayList;
-
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.SkullType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.meta.SkullMeta;
+
+import net.md_5.bungee.api.ChatColor;
+
 
 public class EventsClass implements Listener {
-
+	
 	@EventHandler
-	public void join(PlayerJoinEvent event) {
+	public void join(PlayerJoinEvent event){
+		
 		Player player = event.getPlayer();
-
-		String nl = "\n";
-		ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
-
-		BookMeta bookmeta = (BookMeta) book.getItemMeta();
-		bookmeta.setAuthor("TheSourceCode");
-		bookmeta.setTitle(ChatColor.DARK_PURPLE + "CODING BUKKIT PLUGINS!");
 		
-		ArrayList<String> pages = new ArrayList<String>();
+		ItemStack playerskull = new ItemStack(Material.SKULL_ITEM,1, (short) SkullType.PLAYER.ordinal());
 		
-		pages.add(ChatColor.GREEN + "Step 1: Learn Java!" + nl + "Step 2: Get good at Java");
-		bookmeta.setPages(pages);
+		SkullMeta meta = (SkullMeta) playerskull.getItemMeta();
 		
-		book.setItemMeta(bookmeta);
-		player.getInventory().addItem(book);
-
+		meta.setOwner(player.getName());
+		meta.setDisplayName(ChatColor.DARK_PURPLE + "Player Info");
+		
+		playerskull.setItemMeta(meta);
+		
+		player.getInventory().addItem(playerskull);
+		player.sendMessage(ChatColor.DARK_AQUA + "Please refer to your player heard for Player Info");
+		
 	}
-
+	
 }
