@@ -1,0 +1,22 @@
+package me.dabuseck.Tutorial.Events;
+
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+
+import me.dabuseck.Tutorial.Tutorial;
+import net.md_5.bungee.api.ChatColor;
+
+public class EventsClass implements Listener {
+	Tutorial plugin = Tutorial.getPlugin(Tutorial.class);
+	
+	@EventHandler
+	public void chatevent(AsyncPlayerChatEvent event){
+		for(String s: event.getMessage().split(" ")){
+			if(plugin.getConfig().getStringList("Banned_Words").contains(s)){
+				event.setCancelled(true);
+				event.getPlayer().sendMessage(ChatColor.RED + "Do not curse on this server!");
+			}
+		}
+	}
+}
