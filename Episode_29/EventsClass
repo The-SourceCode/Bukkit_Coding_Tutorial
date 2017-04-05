@@ -1,0 +1,34 @@
+package me.dabuseck.Tutorial.Events;
+
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+
+import com.connorlinfoot.actionbarapi.ActionBarAPI;
+
+public class EventsClass implements Listener {
+	public int blocksbroke = 0;
+
+	@EventHandler
+	public void blockbreak(BlockBreakEvent event) {
+		Player player = event.getPlayer();
+
+		if (blocksbroke == 0) {
+			ActionBarAPI.sendActionBar(player, ChatColor.DARK_AQUA + "You have broke " + ChatColor.AQUA + (blocksbroke + 1)
+					+ ChatColor.DARK_AQUA + " block.");
+			blocksbroke++;
+			blocksbroke++;
+		} else {
+			ActionBarAPI.sendActionBar(player, ChatColor.DARK_AQUA + "You have broke " + ChatColor.AQUA
+					+ (blocksbroke++) + ChatColor.DARK_AQUA + " blocks.");
+		}
+
+		if (blocksbroke == 10) {
+			ActionBarAPI.sendActionBarToAllPlayers(
+					ChatColor.GOLD + player.getName() + ChatColor.GREEN + " has broken 10 blocks!");
+
+		}
+	}
+}
