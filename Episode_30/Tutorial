@@ -1,0 +1,41 @@
+package me.dabuseck.Tutorial;
+
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import me.dabuseck.Tutorial.Events.EventsClass;
+import net.md_5.bungee.api.ChatColor;
+
+public class Tutorial extends JavaPlugin implements Listener {
+	private ConfigManager cfgm;
+	public void onEnable() {
+		
+		loadConfigManager();
+		
+		Commands commands = new Commands();
+		getCommand(commands.cmd1).setExecutor(commands);
+
+		getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "\n\nTutorial has been Enabled\n\n");
+		getServer().getPluginManager().registerEvents(new EventsClass(), this);
+		loadConfig();
+
+	}
+
+	public void onDisable() {
+		getServer().getConsoleSender().sendMessage(ChatColor.RED + "\n\nTutorial has been Disabled\n\n");
+	}
+	
+	public void loadConfigManager(){
+		cfgm = new ConfigManager();
+		cfgm.setup();
+		cfgm.savePlayers();
+		cfgm.reloadPlayers();
+		
+	}
+
+	public void loadConfig() {
+		getConfig().options().copyDefaults(true);
+		saveConfig();
+	}
+
+}
