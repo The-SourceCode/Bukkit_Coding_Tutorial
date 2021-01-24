@@ -27,14 +27,13 @@ lore.add(ChatColor.WHITE + "Used by Zeus in the great god battle");
 meta.setLore(lore);
 meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 item.setItemMeta(meta);
-ShapedRecipe r = new ShapedRecipe(item);
+ShapedRecipe r = new ShapedRecipe(item.getType().getKey(),item);
 
 r.shape("#% ", "#$ ", " $ ");
 r.setIngredient('#', Material.DIAMOND);
 r.setIngredient('%', Material.IRON_INGOT);
 r.setIngredient('$', Material.STICK);
-
-plugin.getServer().addRecipe(r);
+Bukkit.addRecipe(r);
 
 }
 
@@ -45,6 +44,6 @@ ShapelessRecipe slr = new ShapelessRecipe(item);
 
 slr.addIngredient(3,Material.LAVA_BUCKET);
 slr.addIngredient(3, Material.FLINT);
-plugin.getServer().addRecipe(slr);
+Bukkit.addRecipe(slr);
 }
 }
