@@ -27,7 +27,7 @@ lore.add(ChatColor.WHITE + "Used by Zeus in the great god battle");
 meta.setLore(lore);
 meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 item.setItemMeta(meta);
-ShapedRecipe r = new ShapedRecipe(item);
+ShapedRecipe r = new ShapedRecipe(item.getType().getKey(),item);
 
 r.shape("#% ", "#$ ", " $ ");
 r.setIngredient('#', Material.DIAMOND);
